@@ -44,11 +44,11 @@
     drawChart();
 </script>
 
-<div class="graph_container" style="width:{width + 100}px">
-    <button on:click="{toggleChart}"> Toggle </button>  
-    <br>
-    <br>
-
+<div class="graph_container" style="width:{width + 50}px">
+    <div class="graph_title">
+        <button on:click="{toggleChart}"> {key==="origin"? "Total": "Freshwater"} ▼ </button> distribution of water on Earth
+    </div>
+    
     <svg width={width} height={height}>
         <g style="transform: translate({margin.left}px,{margin.top}px)">
             {#if leaves}
@@ -103,7 +103,7 @@
         </g>
     </svg>
 
-    <TreemapLegend />
+    <TreemapLegend key={key}/>
 </div>
 
 

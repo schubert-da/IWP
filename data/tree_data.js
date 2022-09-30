@@ -68,7 +68,29 @@ export const sourceDesc = {
 }
 
 export const legendDesc = {
-  "oceans": ["The vast majority of water on the earth is", "found in its oceans. Being saline in nature,","such water sources are unfit for domestic usage."],
-  "icecaps": ["This is not about oceans in fact it", "found in its oceans. Being saline,","such water sources are unfit for."],
+  "origin": [
+    {"name": "Other saline sources", 
+    "percentage": "1",
+    "desc": "",
+    "colour": "#999"
+    },
+    {"name": "Freshwater", 
+    "percentage": "2.5",
+    "desc": "The vast majority of water on the earth is found in its oceans. Being saline in nature.",
+    "colour": "#333"
+    },
+  ],
+  "freshwater": [
+    {"name": "Groundwater", 
+    "percentage": "30.1",
+    "desc": "",
+    "colour": "#efefef"
+    },
+    {"name": "Surface water", 
+    "percentage": "1.2",
+    "desc": "Surprisingly not a lot of freshwater is found at the surface of the earth.",
+    "colour": "#222"
+    },
+  ],
 }
 
