@@ -349,3 +349,8 @@ template {
 }
 
 /* End normalise.css*/
+
+
+body{
+  padding: 20px;
+}

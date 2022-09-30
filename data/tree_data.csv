@@ -1,0 +1,8 @@
+name,parent,value
+origin,,
+oceans,origin,96.5
+saline,origin,1
+freshwater,origin,2.5
+groundwater,freshwater,30.1
+icecaps,freshwater,68.7
+surface,freshwater,1.2
