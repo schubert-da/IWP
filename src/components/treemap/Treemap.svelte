@@ -1,6 +1,6 @@
 <script>
     import * as d3 from 'd3';
-    import { fade } from 'svelte/transition';
+    import { fade, fly } from 'svelte/transition';
     import { sourceDesc, treeData, treeDataPartial } from "../../../data/tree_data.js";
     import TreemapLegend from './legend/TreemapLegend.svelte';
 
@@ -50,23 +50,15 @@
             css: t => `opacity: 0`
         };
     }
-
-    function rectTransition(node, { delay=0, duration=0 }) {
-        let classList = node.classList;
-        let transition;
-
-        
-
-        return {
-            delay,
-            duration,
-            css: t => `opacity: ${0}`
-        };
-    }
 </script>
 
 <div class="graph_title">
-    <button on:click="{toggleChart}"> {key==="origin"? "Total": "Freshwater"} <span>▼</span> </button> distribution of water on Earth
+        <button 
+            on:click="{toggleChart}" 
+            class:freshwater-active="{key==='freshwater'}"> 
+                {key==="origin"? "Total": "Freshwater"} 
+        </button>
+    distribution of water on Earth
 </div>
 
 <div class="graph_container" style="width:{width + 50}px">
@@ -74,17 +66,16 @@
         <g style="transform: translate({margin.left}px,{margin.top}px)">
             {#if leaves}
                 {#each leaves as d (d.data.name)}
-                    <!-- Trigger transitions when 'key' changes -->
-                        <rect
-                            x = {d.x0}
-                            y = {d.y0}
-                            opacity = { (d.x1 - d.x0) == 0 ? 0: 1 }
-                            width = {d.x1 - d.x0}
-                            height = {d.y1-d.y0}
-                            class = "{ d.data.name } {key}-active"
-                            fill = "#D9D9D9"
-                            stroke = "#222" 
-                        />
+                    <rect
+                        x = {d.x0}
+                        y = {d.y0}
+                        opacity = { (d.x1 - d.x0) == 0 ? 0: 1 }
+                        width = {d.x1 - d.x0}
+                        height = {d.y1-d.y0}
+                        class = "{ d.data.name } {key}-active"
+                        fill = "#D9D9D9"
+                        stroke = "#222" 
+                    />
                     
                     <!-- Trigger transitions when 'key' changes -->
                     {#key key}
@@ -151,12 +142,18 @@
     .graph_title button{
         font-family: Helvetica;
         font-size: 24px;
-        padding: 4px 6px;
+        padding: 6px 6px;
         margin-right: 4px;
+        border: 1px solid #666;
+        border-radius: 6px;
+
+        transition: background-color 1s 0s;
     }
 
-    .graph_title button span{
-        font-size: 14px;
+    .graph_title button.freshwater-active{
+        color: #efefef;
+        background-color: #222;
+        border: 1px solid #efefef;
     }
 
     svg{
