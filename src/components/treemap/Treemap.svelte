@@ -42,6 +42,27 @@
     }
 
     drawChart();
+
+    function hide(node, { delay=0, duration=0 }) {
+        return {
+            delay,
+            duration,
+            css: t => `opacity: 0`
+        };
+    }
+
+    function rectTransition(node, { delay=0, duration=0 }) {
+        let classList = node.classList;
+        let transition;
+
+        
+
+        return {
+            delay,
+            duration,
+            css: t => `opacity: ${0}`
+        };
+    }
 </script>
 
 <div class="graph_title">
@@ -53,51 +74,61 @@
         <g style="transform: translate({margin.left}px,{margin.top}px)">
             {#if leaves}
                 {#each leaves as d (d.data.name)}
-                    <rect
-                        x = {d.x0}
-                        y = {d.y0}
-                        opacity = { (d.x1 - d.x0) == 0 ? 0: 1 }
-                        width = {d.x1 - d.x0}
-                        height = {d.y1-d.y0}
-                        class = "{ d.data.name } {key}-active"
-                        fill = "#D9D9D9"
-                        stroke = "#222" />
+                    <!-- Trigger transitions when 'key' changes -->
+                        <rect
+                            x = {d.x0}
+                            y = {d.y0}
+                            opacity = { (d.x1 - d.x0) == 0 ? 0: 1 }
+                            width = {d.x1 - d.x0}
+                            height = {d.y1-d.y0}
+                            class = "{ d.data.name } {key}-active"
+                            fill = "#D9D9D9"
+                            stroke = "#222" 
+                        />
+                    
+                    <!-- Trigger transitions when 'key' changes -->
+                    {#key key}
+                        {#if d.data.name === "oceans" && key === "origin" || d.data.name === "icecaps" && key === "freshwater"}
 
-                    {#if d.data.name === "oceans" && key === "origin" || d.data.name === "icecaps" && key === "freshwater"}
+                            <!-- BAN for percentage text  -->
+                            <text
+                                x = {d.x1 - 40}
+                                y = {d.y0 + 75}
+                                stroke = "black"
+                                class = "ban"
+                                in:fade={{delay: 1500, duration: 1000}} 
+                                out:hide
+                                > 
+                                {d.data.value}% 
+                            </text>
 
-                        <!-- BAN for percentage text  -->
-                        <text
-                            x = {d.x1 - 40}
-                            y = {d.y0 + 75}
-                            stroke = "black"
-                            class = "ban"> 
-                            {d.data.value}% 
-                        </text>
+                            <!-- Description title text  -->
+                            <text
+                                x = {d.x0 + 15}
+                                y = {d.y1 - 140}
+                                stroke = "black"
+                                class = "desc__title"
+                                in:fade={{"delay": 1500, "duration": 1000}}> 
+                                {key==="origin"? "Oceans": "Ice Caps"} 
+                            </text>
 
-                        <!-- Description title text  -->
-                        <text
-                            x = {d.x0 + 15}
-                            y = {d.y1 - 140}
-                            stroke = "black"
-                            class = "desc__title"> 
-                            {key==="origin"? "Oceans": "Ice Caps"} 
-                        </text>
+                            <!-- Description divider line -->
+                            <line x1={d.x0 + 15} x2={d.x0 + 200} y1={d.y1 - 120} y2={d.y1 - 120} stroke="#666"
+                            in:fade={{"delay": 1500, "duration": 1000}}/>
 
-                        <!-- Description divider line -->
-                        <line x1={d.x0 + 15} x2={d.x0 + 200} y1={d.y1 - 120} y2={d.y1 - 120} stroke="#666"/>
-
-                        <!-- Description long text  -->
-                        <text
-                            y = {d.y1 - 110}
-                            stroke = "black"
-                            class = "desc__text"> 
-                            <!-- Add a tspan element for each line of the description -->
-                            {#each sourceDesc[d.data.name] as line } 
-                                <tspan x={d.x0 + 15} dy={18} >{line}</tspan>
-                            {/each}
-                        </text>
-                    {/if}
-
+                            <!-- Description long text  -->
+                            <text
+                                y = {d.y1 - 110}
+                                stroke = "black"
+                                class = "desc__text"
+                                in:fade={{"delay": 1500, "duration": 1000}}> 
+                                <!-- Add a tspan element for each line of the description -->
+                                {#each sourceDesc[d.data.name] as line } 
+                                    <tspan x={d.x0 + 15} dy={18} >{line}</tspan>
+                                {/each}
+                            </text>
+                        {/if}
+                    {/key}
                 {/each}
             {/if}
         </g>
@@ -110,6 +141,7 @@
 <style>
     .graph_title{
         font-family: 'Playfair Display', serif;
+        color: #222;
         
         font-size: 28px;
         font-weight: 600;
@@ -131,28 +163,63 @@
         border: 1px solid #222;
     }
 
-    rect{
-        transition: all 1s 0.5s ease;
-    }
-
     svg text.ban{
         stroke-width: 0.5px;
         font-size: 64px;
         text-anchor: end;
         letter-spacing: -4px;
+        stroke: #333;
+        fill: #333;
     }
 
     svg text.desc__title{
         stroke-width: 0.5px;
         font-size: 32px;
+        stroke: #222;
+        fill: #222;
     }
 
     svg text.desc__text{
-        stroke: #222;
+        stroke: #333;
+        fill: #333;
         stroke-width: 0.2px;
         font-family: Helvetica;
         font-size: 16px;
         letter-spacing: -0.2px;
+    }
+
+    rect.freshwater-active{
+        transition: 
+            opacity 1s 0s ease-in,  
+            x 1s 1.3s ease, 
+            y 1s 1.3s ease, 
+            width 1s 1.3s ease, 
+            height 1s 1.3s ease, 
+            fill 1s 1.3s ease;
+    }
+
+    rect.origin-active{
+        transition: 
+            opacity 1s 0s ease-in,  
+            x 1s 0.4s ease, 
+            y 1s 0.4s ease, 
+            width 1s 0.4s ease, 
+            height 1s 0.4s ease, 
+            fill 1s 0.4s ease;
+    }
+
+    rect.origin-active.saline, rect.origin-active.oceans{
+        transition: 
+            opacity 1s 1.2s ease-in,  
+            x 0s 0.0s ease, 
+            y 0s 0.0s ease, 
+            width 0s 0.0s ease, 
+            height 0s 0.0s ease, 
+            fill 0s 0.0s ease;
+    }
+
+    rect.freshwater-active.saline, rect.freshwater-active.oceans{
+        opacity: 0;
     }
 
     .origin-active.saline, .freshwater-active.groundwater{

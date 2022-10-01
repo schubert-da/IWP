@@ -1,4 +1,5 @@
 <script>
+    import { fade } from "svelte/transition";
     import { legendDesc } from "../../../../data/tree_data.js";
 
 
@@ -10,16 +11,18 @@
 
 
 <div class="legend">
-    {#each legendItems as item}
-        <div class="legend_item"> 
-            <div class="legend_item__title"> 
-                <div class="legend_symbol" style="background-color:{item.colour}"></div> 
-                {item.name}  
-                <span>- {item.percentage}%</span>
+    {#key legendItems}
+        {#each legendItems as item}
+            <div class="legend_item"  in:fade={{"delay": 600, "duration": 1000}}> 
+                <div class="legend_item__title"> 
+                    <div class="legend_symbol" style="background-color:{item.colour}"></div> 
+                    {item.name}  
+                    <span>- {item.percentage}%</span>
+                </div>
+                <div class="legend_item__desc"> {item.desc} </div>
             </div>
-            <div class="legend_item__desc"> {item.desc} </div>
-        </div>
-    {/each}
+        {/each}
+    {/key}
 </div>
 
 
@@ -40,7 +43,7 @@
     }
 
     .legend_item__title{
-        font-size: 14px;
+        font-size: 15px;
         font-family: "Helvetica";
         font-weight: 600;
         letter-spacing: -0.5px;
@@ -55,6 +58,7 @@
         padding-left: 22px;
         margin-top: 2px;
         font-size: 13px;
+        letter-spacing: -0.4px;
         font-family: "Helvetica";
         max-width: 55ch;
     }
