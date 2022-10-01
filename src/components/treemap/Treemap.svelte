@@ -44,11 +44,11 @@
     drawChart();
 </script>
 
+<div class="graph_title">
+    <button on:click="{toggleChart}"> {key==="origin"? "Total": "Freshwater"} <span>▼</span> </button> distribution of water on Earth
+</div>
+
 <div class="graph_container" style="width:{width + 50}px">
-    <div class="graph_title">
-        <button on:click="{toggleChart}"> {key==="origin"? "Total": "Freshwater"} ▼ </button> distribution of water on Earth
-    </div>
-    
     <svg width={width} height={height}>
         <g style="transform: translate({margin.left}px,{margin.top}px)">
             {#if leaves}
@@ -59,7 +59,7 @@
                         opacity = { (d.x1 - d.x0) == 0 ? 0: 1 }
                         width = {d.x1 - d.x0}
                         height = {d.y1-d.y0}
-                        class = { d.data.name }
+                        class = "{ d.data.name } {key}-active"
                         fill = "#D9D9D9"
                         stroke = "#222" />
 
@@ -76,15 +76,15 @@
 
                         <!-- Description title text  -->
                         <text
-                            x = {d.x0 + 20}
+                            x = {d.x0 + 15}
                             y = {d.y1 - 140}
                             stroke = "black"
                             class = "desc__title"> 
-                            {key==="origin"? "Oceans": "Icecaps"} 
+                            {key==="origin"? "Oceans": "Ice Caps"} 
                         </text>
 
                         <!-- Description divider line -->
-                        <line x1={d.x0 + 20} x2={d.x0 + 200} y1={d.y1 - 120} y2={d.y1 - 120} stroke="#666"/>
+                        <line x1={d.x0 + 15} x2={d.x0 + 200} y1={d.y1 - 120} y2={d.y1 - 120} stroke="#666"/>
 
                         <!-- Description long text  -->
                         <text
@@ -93,7 +93,7 @@
                             class = "desc__text"> 
                             <!-- Add a tspan element for each line of the description -->
                             {#each sourceDesc[d.data.name] as line } 
-                                <tspan x={d.x0 + 20} dy={18} >{line}</tspan>
+                                <tspan x={d.x0 + 15} dy={18} >{line}</tspan>
                             {/each}
                         </text>
                     {/if}
@@ -108,8 +108,23 @@
 
 
 <style>
-    .graph_container{
+    .graph_title{
+        font-family: 'Playfair Display', serif;
+        
+        font-size: 28px;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
 
+    .graph_title button{
+        font-family: Helvetica;
+        font-size: 24px;
+        padding: 4px 6px;
+        margin-right: 4px;
+    }
+
+    .graph_title button span{
+        font-size: 14px;
     }
 
     svg{
@@ -119,12 +134,6 @@
     rect{
         transition: all 1s 0.5s ease;
     }
-
-    /*
-    rect.oceans, rect.saline {
-        transition: width 0s 0.5s ease-out, height 0s 0.5s ease-out, opacity 2s 2s ease, x 0s 4s;
-    }
-    */
 
     svg text.ban{
         stroke-width: 0.5px;
@@ -140,8 +149,16 @@
 
     svg text.desc__text{
         stroke: #222;
-        stroke-width: 0.3px;
-        font-size: 17px;
+        stroke-width: 0.2px;
+        font-family: Helvetica;
+        font-size: 16px;
         letter-spacing: -0.2px;
+    }
+
+    .origin-active.saline, .freshwater-active.groundwater{
+        fill: #eaa67f;
+    }
+    .origin-active.groundwater, .origin-active.icecaps, .freshwater-active.surface{
+        fill: #986985;
     }
 </style>

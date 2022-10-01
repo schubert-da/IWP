@@ -63,33 +63,37 @@ export const treeDataPartial = {
 }
 
 export const sourceDesc = {
-  "oceans": ["The vast majority of water on the earth is", "found in its oceans. Being saline in nature,","such water sources are unfit for domestic usage."],
-  "icecaps": ["This is not about oceans in fact it", "found in its oceans. Being saline,","such water sources are unfit for."],
+  "oceans": ["The vast majority of water on the earth is", "found in its oceans. Being saline in nature,","such water sources are unfit for human usage."],
+  "icecaps": ["More than two-thirds of all freshwater", "available is locked behind glaciers","and ice caps."],
 }
 
 export const legendDesc = {
   "origin": [
-    {"name": "Other saline sources", 
+    {
+    "name": "Other saline sources", 
     "percentage": "1",
-    "desc": "",
-    "colour": "#999"
+    "desc": "Water sources with more than 1000 ppm dissolved salts( freshwater - <1000 ppm)",
+    "colour": "#eaa67f"
     },
-    {"name": "Freshwater", 
+    {
+    "name": "Freshwater", 
     "percentage": "2.5",
-    "desc": "The vast majority of water on the earth is found in its oceans. Being saline in nature.",
-    "colour": "#333"
+    "desc": "",
+    "colour": "#986985"
     },
   ],
   "freshwater": [
-    {"name": "Groundwater", 
+    {
+    "name": "Groundwater", 
     "percentage": "30.1",
     "desc": "",
-    "colour": "#efefef"
+    "colour": "#eaa67f"
     },
-    {"name": "Surface water", 
+    {
+    "name": "Surface water", 
     "percentage": "1.2",
-    "desc": "Surprisingly not a lot of freshwater is found at the surface of the earth.",
-    "colour": "#222"
+    "desc": "Rivers, lakes, reservoirs, creeks, streams, etc.",
+    "colour": "#986985"
     },
   ],
 }
